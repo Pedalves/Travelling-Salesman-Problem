@@ -1,0 +1,3 @@
+ - Instâncias foram originalmente obtidas da TSPLIB: http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/index.html
+ - As instâncias são simêtricas, ou seja, a distância para ir da cidade 1 para a cidade 2 é igual a distância para ir da cidade 2 até a cidade 1.
+ - Existe um arquivo que descreve cada campo das instâncias: DOC.pdf 
