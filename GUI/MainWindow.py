@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         start_button.clicked.connect(self._start_function)
 
         self._result_text_edit.setReadOnly(True)
-        self._result_text_edit.setMaximumSize(400, 50)
+        self._result_text_edit.setMaximumSize(400, 100)
 
         self._map_view = MapView(window)
 

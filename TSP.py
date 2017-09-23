@@ -5,7 +5,7 @@ import numpy as np
 from GeneticAlgorithm.Individual import Individual
 from GUI.MainWindow import MainWindow
 
-tsp_file = 'resources/gr17.tsp'
+tsp_file = 'resources/hk48.tsp'
 
 lower_tri = ''
 
