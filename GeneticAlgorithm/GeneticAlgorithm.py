@@ -4,11 +4,14 @@ import random
 
 
 class GeneticAlgorithm:
-    def __init__(self, max_generations, min_individuals=30, max_individuals=70):
+    def __init__(self, max_generations, min_individuals=30, max_individuals=70, callback=None, update_path=None):
         self._max_generations = max_generations
 
         self._max_individuals = max_individuals
         self._min_individuals = min_individuals
+
+        self._callback = callback
+        self._update_path = update_path
 
         self._curr_generation = 0
 
@@ -31,6 +34,9 @@ class GeneticAlgorithm:
             self._best_individual['Path'] = self._individuals[0].get_genes()
             self._best_individual['Generation'] = self._curr_generation
             self._best_individual['Cost'] = self._individuals[0].fit()
+
+            if self._update_path:
+                self._update_path(self._best_individual)
 
     def start(self):
         while self._curr_generation < self._max_generations:
@@ -58,5 +64,8 @@ class GeneticAlgorithm:
 
             self._update_best_individual()
 
-        print('Best Path: {}\nGeneration: {}\nCost: {}'.format(
-            self._best_individual['Path'],  self._best_individual['Generation'], self._best_individual['Cost']))
+        if self._callback:
+            self._callback()
+        else:
+            print('Best Path: {}\nGeneration: {}\nCost: {}'.format(
+                self._best_individual['Path'],  self._best_individual['Generation'], self._best_individual['Cost']))

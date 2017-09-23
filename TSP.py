@@ -1,8 +1,9 @@
-from pprint import pprint
+from PyQt5.QtWidgets import QApplication
+import sys
 import numpy as np
 
 from GeneticAlgorithm.Individual import Individual
-from GeneticAlgorithm.GeneticAlgorithm import GeneticAlgorithm
+from GUI.MainWindow import MainWindow
 
 tsp_file = 'resources/gr17.tsp'
 
@@ -30,5 +31,8 @@ for i in range(Individual.dimension, 0, -1):
         Individual.weight_matrix[j][Individual.dimension - i] = lower_tri[count]
         count += 1
 
-GA = GeneticAlgorithm(10000)
-GA.start()
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    t = MainWindow()
+    sys.exit(app.exec_())
