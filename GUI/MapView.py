@@ -20,6 +20,12 @@ class MapView(QWidget):
     def _setup_ui(self):
         self.setGeometry(300, 300, 300, 190)
 
+        self.update_cities()
+
+    def update_cities(self):
+        self._cities.clear()
+        self._path = None
+
         size = self.size()
         for _ in range(Individual.dimension):
             x = random.randint(1, size.width() - 1)

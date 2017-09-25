@@ -46,10 +46,12 @@ class GeneticAlgorithm:
 
                 child1, child2 = Individual.crossover(parent1, parent2)
 
-                if random.randint(0, 100) < 30:
+                if random.randint(0, 100) < 20 + \
+                        (self._curr_generation * 0.5) if (self._curr_generation * 0.5) < 50 else 50:
                     child1.mutation()
 
-                if random.randint(0, 100) < 30:
+                if random.randint(0, 100) < 20 + \
+                        (self._curr_generation * 0.5) if (self._curr_generation * 0.5) < 50 else 50:
                     child2.mutation()
 
                 self._individuals.append(child1)
