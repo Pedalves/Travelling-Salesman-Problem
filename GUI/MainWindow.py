@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
         generations_layout.addWidget(self._start_button)
 
         self._result_text_edit.setReadOnly(True)
-        self._result_text_edit.setMaximumSize(400, 100)
+        self._result_text_edit.setMaximumHeight(100)
 
         self._progress_bar.setTextVisible(False)
         self._progress_bar.setVisible(False)
@@ -137,12 +137,17 @@ class MainWindow(QMainWindow):
     def _change_file(self, tsp_file):
         lower_tri = ''
 
+        is_lower = True
+
         with open(tsp_file) as f:
             line = ''
             while 'EOF' not in line:
                 line = f.readline()
                 if 'DIMENSION' in line:
                     Individual.dimension = int(line.split('DIMENSION: ')[1])
+                if 'EDGE_WEIGHT_FORMAT' in line:
+                    if 'UPPER_DIAG_ROW' in line:
+                       is_lower = False
                 elif 'EDGE_WEIGHT_SECTION' in line:
                     line = f.readline()
                     while 'EOF' not in line:
@@ -153,10 +158,19 @@ class MainWindow(QMainWindow):
 
         lower_tri = [int(x) for x in list(filter(None, lower_tri.split(" ")))]
         count = 0
-        for i in range(Individual.dimension, 0, -1):
-            for j in range(0, Individual.dimension - i + 1):
-                Individual.weight_matrix[Individual.dimension - i][j] = lower_tri[count]
-                Individual.weight_matrix[j][Individual.dimension - i] = lower_tri[count]
-                count += 1
+
+        if is_lower:
+            for i in range(Individual.dimension, 0, -1):
+                for j in range(0, Individual.dimension - i + 1):
+                    Individual.weight_matrix[Individual.dimension - i][j] = lower_tri[count]
+                    Individual.weight_matrix[j][Individual.dimension - i] = lower_tri[count]
+                    count += 1
+
+        else:
+            for i in range(0, Individual.dimension):
+                for j in range(i, Individual.dimension):
+                    Individual.weight_matrix[i][j] = lower_tri[count]
+                    Individual.weight_matrix[j][i] = lower_tri[count]
+                    count += 1
 
         self._map_view.update_cities()

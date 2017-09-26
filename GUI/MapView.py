@@ -52,4 +52,5 @@ class MapView(QWidget):
 
     def update_path(self, path):
         self._path = path
+        self.update()
 
