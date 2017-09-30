@@ -13,16 +13,18 @@ namespace T1IA
         int dimension = 0;
 
         //Temperature
-        float temp = 400;
+        float initTemp = 500;
+        float temp;
 
         //Temperature cooldown multiplier
-        float mult = 0.999f;
+        float mult = 0.9983f;
         
         //Current solution
         List<int> current;
 
         //Best solution
         List<int> bestSolution;
+        int distance;
 
         //Random
         Random rand = new Random();
@@ -98,6 +100,26 @@ namespace T1IA
                     return false;
                 }
             }
+            else
+            {
+                if (dimension != 0)
+                {
+                    for (int i = dimension - 1; i >= 0; i--)
+                    {
+                        for (int j = i; j >= 0; j--)
+                        {
+                            dataMatrix[i, j] = Int32.Parse(data[next]);
+                            dataMatrix[j, i] = Int32.Parse(data[next]);
+                            next++;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error: dimension 0\n");
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -106,7 +128,7 @@ namespace T1IA
         /// Calculates the TSP solution
         /// </summary>
         /// <returns>the solution</returns>
-        public List<int> CalculateTSP()
+        public void CalculateTSP()
         {
             //Next solution
             List<int> next;
@@ -120,7 +142,7 @@ namespace T1IA
             //Iterates until max allowed
             while (count < dimension)
             {
-                temp = 400;
+                temp = initTemp;
                 while(temp > 0.001)
                 {
                     //Updates the temperature
@@ -161,9 +183,8 @@ namespace T1IA
             {
                 Console.Write(n + " - ");
             }
-            Console.WriteLine("\nPeso: " + CalculateDistance(bestSolution));
-
-            return bestSolution;
+            distance = CalculateDistance(bestSolution);
+            Console.WriteLine("\nPeso: " + distance);
         }
 
         /// <summary>
@@ -213,13 +234,15 @@ namespace T1IA
             }
             else
             {
+                //Perfoms a 2-opt   
+
+
                 //Clones the current solution
-                foreach(int n in current)
+                foreach (int n in current)
                 {
                     newSolution.Add(n);
                 }
 
-                //Perfoms a swap
                 int i;
                 int j;
                 do
@@ -228,22 +251,32 @@ namespace T1IA
                     j = rand.Next(dimension);
                 } while (i == j);
 
-                int temp = newSolution[i];
-                newSolution[i] = newSolution[j];
-                newSolution[j] = temp;
+                int min, max;
+                if(i < j)
+                {
+                    min = i;
+                    max = j;
+                }
+                else
+                {
+                    min = j;
+                    max = i;
+                }
 
-                //Console.WriteLine("Swap " + i + " - " + j);
-                //Console.WriteLine("current");
-                //foreach (int n in current)
-                //{
-                //    Console.Write(n + " ");
-                //}
-                //Console.WriteLine("new");
-                //foreach (int n in newSolution)
-                //{
-                //    Console.Write(n + " ");
-                //}
+                int diff = max - min;
+                List<int> route = new List<int>(diff+1);
 
+                //Clones the route
+                for (int k = min; k <= max; k++)
+                {
+                    route.Add(newSolution[k]);
+                }
+
+                //Reverses the route inside the solution
+                for (int k = 0; k <= diff; k++)
+                {
+                    newSolution[k+min] = route[diff-k];
+                }
             }
 
             return newSolution;
@@ -256,6 +289,15 @@ namespace T1IA
         void CalculateTemp()
         {
             temp *= mult;
+        }
+
+        public void getParameters(ref List<int> sol, ref float coolFactor, ref int iterations, ref float initialTemp, ref int bestDistance)
+        {
+            sol = bestSolution;
+            coolFactor = mult;
+            iterations = dimension;
+            initialTemp = initTemp;
+            bestDistance = distance;
         }
     }
 }
