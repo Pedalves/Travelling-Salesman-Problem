@@ -299,5 +299,10 @@ namespace T1IA
             initialTemp = initTemp;
             bestDistance = distance;
         }
+
+        public void setRandSeed(int n)
+        {
+            rand = new Random(n);
+        }
     }
 }

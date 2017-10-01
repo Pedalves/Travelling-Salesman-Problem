@@ -19,9 +19,22 @@ namespace T1IA
             int iterations = 0;
             float initialTemp = 0;
             int bestDistance = 0;
+            int seed = 0;
 
             //Creates a new simulated annealing class
             SimulatedAnnealing sa = new SimulatedAnnealing();
+
+
+            if (args.Length > 0)
+            {
+                bool result = Int32.TryParse(args[0], out seed);
+                if (result)
+                {
+                    sa.setRandSeed(seed);
+
+                    Console.WriteLine("Usando seed: " + seed);
+                }
+            }
 
             //Read the file at given path
             if (sa.ReadFile(path))
@@ -47,7 +60,7 @@ namespace T1IA
 
             sa.getParameters(ref solution, ref coolFactor, ref iterations, ref initialTemp, ref bestDistance);
 
-            string[] lines = { "Solution: ", "Cooling factor: ", "Number of iterations: ", "Initial temperature: ", "Distance: " };
+            string[] lines = { "Solution: ", "Cooling factor: ", "Number of iterations: ", "Initial temperature: ", "Distance: ", "Seed: " };
             foreach(int n in solution)
             {
                 lines[0] += n + " - ";
@@ -56,8 +69,15 @@ namespace T1IA
             lines[2] += iterations;
             lines[3] += initialTemp;
             lines[4] += bestDistance;
+            if(seed == 0)
+            {
+                lines[5] += "Valor Default do método (valor de semente padrão dependente de tempo). Para usar outro valor, passe como primeiro parametro para o executavel";
+            }
+            else
+            {
+                lines[5] += seed;
+            }
             File.WriteAllLines(@"si175C#.sol", lines);
-
 
             if (System.Diagnostics.Debugger.IsAttached)
             {
