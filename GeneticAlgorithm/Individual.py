@@ -18,6 +18,7 @@ class Individual:
         Construtor da classe
         :param genes: Genes do individuo
         """
+
         self._genes = genes
 
     def get_genes(self):

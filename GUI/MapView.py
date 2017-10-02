@@ -7,6 +7,10 @@ from GeneticAlgorithm.Individual import Individual
 
 
 class MapView(QWidget):
+    """
+    Classe responsavel pelo grafo desenhado na GUI
+    """
+
     def __init__(self, parent=None):
         super(MapView, self).__init__(parent)
 
