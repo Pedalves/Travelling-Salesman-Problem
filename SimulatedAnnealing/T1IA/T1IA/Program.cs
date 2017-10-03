@@ -60,22 +60,28 @@ namespace T1IA
 
             sa.getParameters(ref solution, ref coolFactor, ref iterations, ref initialTemp, ref bestDistance);
 
-            string[] lines = { "Solution: ", "Cooling factor: ", "Number of iterations: ", "Initial temperature: ", "Distance: ", "Seed: " };
-            foreach(int n in solution)
+            //string[] lines = { "Solution: ", "Cooling factor: ", "Number of iterations: ", "Initial temperature: ", "Distance: ", "Seed: " };
+            //foreach(int n in solution)
+            //{
+            //    lines[0] += n + " - ";
+            //}
+            //lines[1] += coolFactor;
+            //lines[2] += iterations;
+            //lines[3] += initialTemp;
+            //lines[4] += bestDistance;
+            //if(seed == 0)
+            //{
+            //    lines[5] += "Valor Default do método (valor de semente padrão dependente de tempo). Para usar outro valor, passe como primeiro parametro para o executavel";
+            //}
+            //else
+            //{
+            //    lines[5] += seed;
+            //}
+            string[] lines = { "", ""};
+            lines[0] += bestDistance;
+            foreach (int n in solution)
             {
-                lines[0] += n + " - ";
-            }
-            lines[1] += coolFactor;
-            lines[2] += iterations;
-            lines[3] += initialTemp;
-            lines[4] += bestDistance;
-            if(seed == 0)
-            {
-                lines[5] += "Valor Default do método (valor de semente padrão dependente de tempo). Para usar outro valor, passe como primeiro parametro para o executavel";
-            }
-            else
-            {
-                lines[5] += seed;
+                lines[1] += n + " ";
             }
             File.WriteAllLines(@"si175C#.sol", lines);
 
